@@ -18,6 +18,7 @@
     "hubot": "2.3.2",
     "hubot-scripts": ">= 2.1.0",
     "optparse": "1.0.3",
+    "githubot": "0.2.0",
     "htmlparser":"1.7.6",
     "soupselect":"0.2.0"
   },
