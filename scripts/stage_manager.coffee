@@ -64,3 +64,11 @@ module.exports = (robot) ->
   robot.respond /stg force unlock$/i, (msg) ->
     stg.forceUnlock()
     msg.send ":unlock: unlocked stg!"
+
+  robot.router.get "/stg", (req, res) ->
+    res.setHeader "Content-Type", "application/json"
+    stat = stg.status()
+    if stat.locked_by?
+      res.end "{\"locked_by\": \"#{stat['locked_by']}\", \"locked_at\": \"#{stat['locked_at']}\"}"
+    else
+      res.end "{}"
