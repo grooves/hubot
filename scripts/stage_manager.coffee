@@ -51,13 +51,13 @@ module.exports = (robot) ->
     if !!(status = stg.lock(msg.message.user))
       msg.send ":lock: locked stg!"
     else
-      msg.send "failded to lock stg..."
+      msg.send "failed to lock stg..."
 
   robot.respond /stg unlock$/i, (msg) ->
     if !!(status = stg.unlock(msg.message.user))
       msg.send ":unlock: unlocked stg!"
     else
-      msg.send "failded to unlock stg..."
+      msg.send "failed to unlock stg..."
 
   robot.respond /stg force unlock$/i, (msg) ->
     stg.forceUnlock()
