@@ -34,7 +34,7 @@ class Stage
   unlock: (user) ->
     throw "NG" unless @cache['locked_by'] == user
 
-    forceUnlock()
+    @robot.brain.data.staging = (@cache = {})
 
   forceUnlock: ->
     @robot.brain.data.staging = (@cache = {})
