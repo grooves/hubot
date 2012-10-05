@@ -22,23 +22,19 @@ class Stage
     "stg is locked by #{@cache['locked_by'].name} at #{@cache['locked_at']}."
 
   lock: (user) ->
-    unless @cache['locked_by']
-      @cache['locked_by'] = user
-      @cache['locked_at'] = new Date()
-      @robot.brain.data.staging = @cache
-    else
-      null
+    throw "NG" if @cache['locked_by']
+
+    @cache['locked_by'] = user
+    @cache['locked_at'] = new Date()
+    @robot.brain.data.staging = @cache
 
   unlock: (user) ->
-    if @cache['locked_by'] == user
-      @cache = {}
-      @robot.brain.data.staging = @cache
-    else
-      null
+    throw "NG" unless @cache['locked_by'] == user
+
+    forceUnlock()
 
   forceUnlock: ->
-    @cache = {}
-    @robot.brain.data.staging = @cache
+    @robot.brain.data.staging = (@cache = {})
 
 module.exports = (robot) ->
   stg = new Stage robot
@@ -47,16 +43,18 @@ module.exports = (robot) ->
     msg.send stg.statusMessage()
 
   robot.respond /stg lock$/i, (msg) ->
-    if !!(status = stg.lock(msg.message.user))
+    try
+      stg.lock msg.message.user
       msg.send ":lock: locked stg!"
-    else
+    catch error
       msg.send "failed to lock stg..."
       msg.send stg.statusMessage()
 
   robot.respond /stg unlock$/i, (msg) ->
-    if !!(status = stg.unlock(msg.message.user))
+    try
+      stg.unlock msg.message.user
       msg.send ":unlock: unlocked stg!"
-    else
+    catch error
       msg.send "failed to unlock stg..."
       msg.send stg.statusMessage()
 
