@@ -19,7 +19,7 @@ class Stage
     @cache
 
   statusMessage: ->
-    "stg is locked by #{@cache['locked_by']} at #{@cache['locked_at']}."
+    "stg is locked by #{@cache['locked_by'].name} at #{@cache['locked_at']}."
 
   lock: (user) ->
     unless @cache['locked_by']
@@ -44,20 +44,21 @@ module.exports = (robot) ->
   stg = new Stage robot
 
   robot.respond /stg$/i, (msg) ->
-    if !!(status = stg.status())
-      msg.send stg.statusMessage()
+    msg.send stg.statusMessage()
 
   robot.respond /stg lock$/i, (msg) ->
     if !!(status = stg.lock(msg.message.user))
       msg.send ":lock: locked stg!"
     else
       msg.send "failed to lock stg..."
+      msg.send stg.statusMessage()
 
   robot.respond /stg unlock$/i, (msg) ->
     if !!(status = stg.unlock(msg.message.user))
       msg.send ":unlock: unlocked stg!"
     else
       msg.send "failed to unlock stg..."
+      msg.send stg.statusMessage()
 
   robot.respond /stg force unlock$/i, (msg) ->
     stg.forceUnlock()
