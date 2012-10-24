@@ -1,1 +1,1 @@
-web: bin/hubot -a campfire -n Hubot --enable-slash
+web: bin/hubot -a campfire -n Hubot --alias '/'
